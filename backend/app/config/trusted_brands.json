@@ -1,0 +1,48 @@
+{
+  "version": "1.0.0",
+  "description": "Configurable trusted organizations and institutional domains for URL brand spoofing analysis.",
+  "brands": [
+    {
+      "id": "internshala",
+      "name": "Internshala",
+      "canonical_domains": ["internshala.com"],
+      "keywords": ["internshala"]
+    },
+    {
+      "id": "coursera",
+      "name": "Coursera",
+      "canonical_domains": ["coursera.org"],
+      "keywords": ["coursera"]
+    },
+    {
+      "id": "google",
+      "name": "Google",
+      "canonical_domains": ["google.com", "google.co.in"],
+      "keywords": ["google", "gmail"]
+    },
+    {
+      "id": "microsoft",
+      "name": "Microsoft",
+      "canonical_domains": ["microsoft.com", "office.com"],
+      "keywords": ["microsoft", "office365"]
+    },
+    {
+      "id": "sbi",
+      "name": "State Bank of India",
+      "canonical_domains": ["onlinesbi.sbi", "sbi.co.in"],
+      "keywords": ["onlinesbi", "sbicard"]
+    },
+    {
+      "id": "hdfc",
+      "name": "HDFC Bank",
+      "canonical_domains": ["hdfcbank.com"],
+      "keywords": ["hdfcbank", "hdfc"]
+    },
+    {
+      "id": "paypal",
+      "name": "PayPal",
+      "canonical_domains": ["paypal.com"],
+      "keywords": ["paypal"]
+    }
+  ]
+}
