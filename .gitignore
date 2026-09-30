@@ -9,8 +9,9 @@ __pycache__/
 *.so
 .pytest_cache/
 
-# Node
-node_modules/
+# Datasets
+*.zip
+backend/datasets/raw/*.zip
 frontend/node_modules/
 dist/
 frontend/dist/

@@ -1,0 +1,73 @@
+{
+  "version": "1.0.0",
+  "description": "Strictly isolated live demonstration scenarios for competition judging. Must NEVER be used in training, validation, or test sets.",
+  "scenarios": [
+    {
+      "id": "DEMO-001",
+      "type": "message",
+      "title": "Fake Internship Offer with Laptop Courier Deposit",
+      "input": "Dear candidate, you have been selected for Summer AI Research Internship at Apex Global! Monthly stipend: Rs. 40,000. No technical interview required. To confirm your joining and dispatch your company Apple MacBook Air, transfer a refundable security deposit of Rs. 1,950 via UPI to hr.apex@okaxis within 3 hours. Offer expires today.",
+      "expected_category": "Fake Internship",
+      "expected_risk": "HIGH_RISK",
+      "key_indicators": [
+        "Upfront fee / deposit demand",
+        "High stipend with no interview",
+        "Urgency trigger (3 hours)",
+        "UPI payment to unverified address"
+      ]
+    },
+    {
+      "id": "DEMO-002",
+      "type": "url",
+      "title": "Typosquatted University Fee Payment Phishing",
+      "input": "http://internsha1a-student-stipend-verify.xyz/login?session=98231",
+      "expected_category": "Phishing",
+      "expected_risk": "HIGH_RISK",
+      "key_indicators": [
+        "Brand typosquatting (internsha1a mimics Internshala)",
+        "High-risk TLD (.xyz)",
+        "Multiple subdomains / depth",
+        "Suspicious query token (login session)"
+      ]
+    },
+    {
+      "id": "DEMO-003",
+      "type": "message",
+      "title": "Telegram YouTube Task Scam",
+      "input": "Student part-time income opportunity: Earn Rs 2,500 daily working from home! Simply like 3 YouTube videos and subscribe to channels. Instant payment via Google Pay. Contact our Telegram supervisor @DailyTaskRewards2026 to start now.",
+      "expected_category": "Fake Recruitment",
+      "expected_risk": "HIGH_RISK",
+      "key_indicators": [
+        "Off-platform Telegram migration",
+        "Unrealistic compensation for trivial task",
+        "Task-based recruitment fraud pattern"
+      ]
+    },
+    {
+      "id": "DEMO-004",
+      "type": "message",
+      "title": "Authorized Synthetic Academic Circular (Benign)",
+      "input": "Office of the Dean Academic: End-semester examinations for all B.Tech 3rd year programs commence on 18th November 2026 as per the academic calendar. The detailed timetable and hall allocations have been published on the official student portal https://academics.university.edu.in. No hardcopy forms are required.",
+      "expected_category": "Academic Notice",
+      "expected_risk": "SAFE",
+      "key_indicators": [
+        "Legitimate university domain",
+        "No payment or fee requests",
+        "No off-platform contacts"
+      ]
+    },
+    {
+      "id": "DEMO-005",
+      "type": "url",
+      "title": "Legitimate University Educational Domain (Benign)",
+      "input": "https://internshala.com/student/dashboard",
+      "expected_category": "Legitimate",
+      "expected_risk": "SAFE",
+      "key_indicators": [
+        "Verified canonical domain",
+        "HTTPS secure protocol",
+        "Standard institutional path"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,422 @@
+{
+  "version": "1.0.0",
+  "description": "Curated student threat scenarios and legitimate academic communications for ScamShield.",
+  "samples": [
+    {
+      "id": "intern_001",
+      "text": "Dear Student, Congratulations! You have been shortlisted for Remote Data Analyst Internship at TechCorp. Stipend: INR 45,000/month. No interview required. To confirm your laptop dispatch and slot, deposit a refundable security fee of Rs. 1,999 to UPI ID techcorp.dispatch@okhdfcbank within 2 hours.",
+      "label": "scam",
+      "category": "Fake Internship"
+    },
+    {
+      "id": "intern_002",
+      "text": "Selected for Google Partner Summer Internship! Work 2 hours daily from home. Stipend Rs 35000 per month. Please contact HR Sneha on Telegram @GoogleHiring2026 immediately to complete documentation and registration deposit.",
+      "label": "scam",
+      "category": "Fake Internship"
+    },
+    {
+      "id": "intern_003",
+      "text": "Urgent internship offer letter released: Web Development Intern. Stipend 25,000 INR. Offer valid till 6 PM today. Send Rs 1200 training kit fee via GooglePay to 9876543210 to reserve your joining kit.",
+      "label": "scam",
+      "category": "Fake Internship"
+    },
+    {
+      "id": "intern_004",
+      "text": "Offer Letter for Machine Learning Intern: You are selected with stipend 40,000 INR. Submit Rs 2,500 security deposit for company Macbook delivery. Refundable after 7 days.",
+      "label": "scam",
+      "category": "Fake Internship"
+    },
+    {
+      "id": "intern_005",
+      "text": "Congratulations candidate, your resume on Internshala was reviewed. You have been selected for Graphic Design Internship paying 30,000/month. Connect on Telegram @InternshipCoordinatorHQ to submit paperwork and laptop courier charges.",
+      "label": "scam",
+      "category": "Fake Internship"
+    },
+    {
+      "id": "intern_006",
+      "text": "Direct internship selection at Amazon Cloud Ops. No technical round. Stipend 50k monthly. Pay nominal onboarding verification fee of 1500 to confirm seat.",
+      "label": "scam",
+      "category": "Fake Internship"
+    },
+    {
+      "id": "intern_007",
+      "text": "Summer Research Intern opening: Selected students will receive Rs 28,000 stipend. Submit Rs 950 registration fee via UPI to secure research certificate.",
+      "label": "scam",
+      "category": "Fake Internship"
+    },
+    {
+      "id": "intern_008",
+      "text": "Pre-placement internship offer from Microsoft India vendor. Stipend 42000. Send 2000 INR background verification fee to HR on WhatsApp immediately.",
+      "label": "scam",
+      "category": "Fake Internship"
+    },
+
+    {
+      "id": "recruit_001",
+      "text": "Part time student job: Earn Rs 2,000 to 5,000 daily by simply subscribing to YouTube channels and giving 5-star ratings on Google Maps. No experience needed. Join Telegram channel @DailyTaskCash to start task 1 now.",
+      "label": "scam",
+      "category": "Fake Recruitment"
+    },
+    {
+      "id": "recruit_002",
+      "text": "Work from home part-time opportunity: Simple copy-paste and data entry work. Earn 1500 per day. Daily payment guaranteed via Paytm/UPI. Message manager on WhatsApp 9123456789 to get tasks.",
+      "label": "scam",
+      "category": "Fake Recruitment"
+    },
+    {
+      "id": "recruit_003",
+      "text": "YouTube Promotion Task: Like 3 videos and earn Rs 150 instantly. Complete 20 tasks daily to make Rs 3000. Contact our Telegram receptionist @TaskEarnPro.",
+      "label": "scam",
+      "category": "Fake Recruitment"
+    },
+    {
+      "id": "recruit_004",
+      "text": "Recruitment drive: Online merchant order processing job. Student friendly 1 hour per day. Prepaid trial tasks available. Recharge 1000 and get 1400 back in 15 minutes.",
+      "label": "scam",
+      "category": "Fake Recruitment"
+    },
+    {
+      "id": "recruit_005",
+      "text": "Campus hiring: Part-time social media reviewer. Get 500 Rs per review. Send your name and age to WhatsApp 9811223344. Start receiving daily payouts.",
+      "label": "scam",
+      "category": "Fake Recruitment"
+    },
+    {
+      "id": "recruit_006",
+      "text": "Daily freelance micro-tasks for college students. Earn up to 25000 weekly by rating products on Amazon. Join Telegram link t.me/amazon_rating_tasks_india.",
+      "label": "scam",
+      "category": "Fake Recruitment"
+    },
+    {
+      "id": "recruit_007",
+      "text": "Urgent hiring: SMS typing job. Work from mobile. Salary 30000 per month. Pay one-time software activation charge of Rs 499 to start.",
+      "label": "scam",
+      "category": "Fake Recruitment"
+    },
+    {
+      "id": "recruit_008",
+      "text": "Earn pocket money daily! Watch 30-second trailers and get Rs 80 each. Immediate withdrawal to PhonePe or GPay. Join WhatsApp group link now.",
+      "label": "scam",
+      "category": "Fake Recruitment"
+    },
+
+    {
+      "id": "scholar_001",
+      "text": "National Merit Scholarship Scheme 2026: Your application has been approved for financial grant of Rs. 75,000. To disburse the grant to your bank, pay administrative clearance fee of Rs. 999 at http://national-merit-scholarship.top/claim before 5 PM.",
+      "label": "scam",
+      "category": "Scholarship Scam"
+    },
+    {
+      "id": "scholar_002",
+      "text": "Ministry of Education Student Aid: You have won Prime Minister Special Scholarship of Rs 50,000. Deposit 750 INR document verification charge on UPI scholarship.gov@paytm to release funds.",
+      "label": "scam",
+      "category": "Scholarship Scam"
+    },
+    {
+      "id": "scholar_003",
+      "text": "Pre-matric & Post-matric state scholarship approved! Amount 60,000 credited to escrow. Pay mandatory state tax stamp fee of Rs 1,450 to release money into account.",
+      "label": "scam",
+      "category": "Scholarship Scam"
+    },
+    {
+      "id": "scholar_004",
+      "text": "Congratulations! Your college tuition fee waiver grant of Rs 40,000 is ready. Click link to verify bank account details and pay stamp duty fee: http://tuition-relief-edu.xyz.",
+      "label": "scam",
+      "category": "Scholarship Scam"
+    },
+    {
+      "id": "scholar_005",
+      "text": "Global STEM Fellowship: 100% tuition coverage for Indian engineering students. Register today by paying Rs 1,200 evaluation fee before deadline expires tonight.",
+      "label": "scam",
+      "category": "Scholarship Scam"
+    },
+    {
+      "id": "scholar_006",
+      "text": "Urgent notification: Your scholarship grant of 35000 is pending release. Transfer 500 INR processing fee to registrar UPI ID immediately to avoid forfeiture.",
+      "label": "scam",
+      "category": "Scholarship Scam"
+    },
+
+    {
+      "id": "phish_001",
+      "text": "University Exam Portal Notice: Your semester examination registration is incomplete. Your student hall ticket will be blocked within 3 hours. Verify login credentials immediately at http://university-exam-portal-auth.xyz/login.",
+      "label": "scam",
+      "category": "Phishing"
+    },
+    {
+      "id": "phish_002",
+      "text": "College WiFi Portal: Your campus internet credentials have expired. Login to renew access immediately or your university email account will be permanently deactivated: http://wifi-student-login.top/auth.",
+      "label": "scam",
+      "category": "Phishing"
+    },
+    {
+      "id": "phish_003",
+      "text": "Google Classroom Security Alert: Suspicious login attempt from Russia. Click here to confirm your college email account credentials: http://accounts-google-verify.click/signin.",
+      "label": "scam",
+      "category": "Phishing"
+    },
+    {
+      "id": "phish_004",
+      "text": "Coursera Certificate Verification: Your free institutional course certificate has been generated. Login to claim before link expires: http://coursera-student-certs.xyz/verify.",
+      "label": "scam",
+      "category": "Phishing"
+    },
+    {
+      "id": "phish_005",
+      "text": "Microsoft Office 365 Student License expiring in 24 hours. Sign in to update billing information and maintain unlimited OneDrive storage: http://office365-renew-student.biz.",
+      "label": "scam",
+      "category": "Phishing"
+    },
+    {
+      "id": "phish_006",
+      "text": "Internshala Account Warning: Your account was flagged for policy violation. Update password and profile details here to avoid ban: http://internshala-account-support.online.",
+      "label": "scam",
+      "category": "Phishing"
+    },
+
+    {
+      "id": "upi_001",
+      "text": "Hi, I am buying your textbook from campus marketplace. I have sent Rs. 1,500 via PhonePe QR code. Please scan the attached QR code and enter your 6-digit UPI PIN to receive the money in your account.",
+      "label": "scam",
+      "category": "Payment / UPI Fraud"
+    },
+    {
+      "id": "upi_002",
+      "text": "Overpayment alert: By mistake I sent Rs 5,000 instead of Rs 500 for college fest tickets. Please accept the UPI collect request of Rs 4,500 immediately to return the balance.",
+      "label": "scam",
+      "category": "Payment / UPI Fraud"
+    },
+    {
+      "id": "upi_003",
+      "text": "GPay Cashback Notification: You have won a scratch card reward of Rs. 1,849! Click here to accept cashback into your bank account. Enter your UPI PIN to claim reward.",
+      "label": "scam",
+      "category": "Payment / UPI Fraud"
+    },
+    {
+      "id": "upi_004",
+      "text": "Hostel security deposit refund of Rs 3,000 is approved. Click the UPI link sent to your phone and approve transaction to receive refund.",
+      "label": "scam",
+      "category": "Payment / UPI Fraud"
+    },
+    {
+      "id": "upi_005",
+      "text": "OLX Buyer: I have transferred the advance for your laptop. Tap the notification on Paytm and confirm your MPIN to deposit the funds.",
+      "label": "scam",
+      "category": "Payment / UPI Fraud"
+    },
+    {
+      "id": "upi_006",
+      "text": "Electricity bill cashback of Rs 750 credited to your wallet. Click link to transfer to your SBI account. Enter PIN to authorize credit.",
+      "label": "scam",
+      "category": "Payment / UPI Fraud"
+    },
+
+    {
+      "id": "imperson_001",
+      "text": "URGENT from Dean Academic Affairs: I am currently in an emergency meeting and cannot take calls. I need you to purchase 5 Apple gift cards worth Rs 5,000 each for guest speakers. Send codes to this WhatsApp number right away.",
+      "label": "scam",
+      "category": "Impersonation"
+    },
+    {
+      "id": "imperson_002",
+      "text": "FedEx Courier Alert: Your parcel tracking #FX-889123 destined for your college address contains suspicious contraband and expired passports. Contact Customs Officer Sharma on WhatsApp 9876501234 to avoid arrest.",
+      "label": "scam",
+      "category": "Impersonation"
+    },
+    {
+      "id": "imperson_003",
+      "text": "Cyber Crime Cell Mumbai Notice: An FIR #9921 has been registered against your mobile number for money laundering. You are placed under Digital Arrest. Do not disconnect this call or leave your room.",
+      "label": "scam",
+      "category": "Impersonation"
+    },
+    {
+      "id": "imperson_004",
+      "text": "Message from Department Head Prof. Banerjee: Are you free right now? Need a quick urgent favor regarding department event funding. Reply to this email immediately.",
+      "label": "scam",
+      "category": "Impersonation"
+    },
+    {
+      "id": "imperson_005",
+      "text": "SBI Customer Support: I am calling from State Bank of India main branch. A fraudulent transaction of Rs 25,000 was attempted on your card. Share the 6-digit OTP sent to your phone to cancel it.",
+      "label": "scam",
+      "category": "Impersonation"
+    },
+    {
+      "id": "imperson_006",
+      "text": "TRAI Notice: Your mobile connection will be blocked within 2 hours due to illegal broadcasting. Press 9 to speak with telecom authority officer.",
+      "label": "scam",
+      "category": "Impersonation"
+    },
+
+    {
+      "id": "notice_001",
+      "text": "OFFICIAL CIRCULAR: Due to severe weather warning, all end-semester examinations scheduled from tomorrow are postponed indefinitely. Revised timetable and fee re-submission link: http://university-notice-board.top/exams.",
+      "label": "scam",
+      "category": "Fake Institutional Notice"
+    },
+    {
+      "id": "notice_002",
+      "text": "Hostel Allocation Committee: Round 2 room allotment list published. Students must confirm booking by transferring Rs 8,500 mess advance to account number 3391029381 within 24 hours.",
+      "label": "scam",
+      "category": "Fake Institutional Notice"
+    },
+    {
+      "id": "notice_003",
+      "text": "College Library Notice: Fine of Rs. 450 accrued on overdue books. Failure to clear balance online via http://library-fines-portal.xyz will disqualify student from exam hall ticket.",
+      "label": "scam",
+      "category": "Fake Institutional Notice"
+    },
+    {
+      "id": "notice_004",
+      "text": "Notice from Placement Cell: Mandatory campus placement drive fee of Rs 1,500 to be submitted to student coordinator UPI ID before 4 PM today.",
+      "label": "scam",
+      "category": "Fake Institutional Notice"
+    },
+    {
+      "id": "notice_005",
+      "text": "Department Fee Revision Alert: Late payment penalty of Rs 2,000 waived if cleared before midnight through online direct portal: http://institute-fees-direct.online.",
+      "label": "scam",
+      "category": "Fake Institutional Notice"
+    },
+    {
+      "id": "notice_006",
+      "text": "Emergency Notice: Convocation ceremony dress code and pass fee of Rs 800 must be deposited via GooglePay to 9112233445 to receive admit badge.",
+      "label": "scam",
+      "category": "Fake Institutional Notice"
+    },
+
+    {
+      "id": "kyc_001",
+      "text": "Dear SBI Customer, your YONO account has been suspended due to pending PAN/Aadhaar KYC. Click here to update KYC within 24 hours to prevent permanent account freeze: http://sbi-kyc-yono-update.xyz.",
+      "label": "scam",
+      "category": "KYC / Account Scam"
+    },
+    {
+      "id": "kyc_002",
+      "text": "Electricity Bill Alert: Dear Consumer, your electricity power will be disconnected tonight at 9:30 PM from the power sub-station because your previous month bill was not updated. Immediately call electricity officer at 9876543210.",
+      "label": "scam",
+      "category": "KYC / Account Scam"
+    },
+    {
+      "id": "kyc_003",
+      "text": "HDFC Bank Alert: Your netbanking is disabled due to outdated KYC documents. Update now at http://hdfc-netbanking-verify.top or visit branch. Failure will result in Rs 1000 penalty.",
+      "label": "scam",
+      "category": "KYC / Account Scam"
+    },
+    {
+      "id": "kyc_004",
+      "text": "Airtel 5G SIM Block Notice: Your document verification is incomplete. Your outgoing calls will be stopped in 2 hours. Update Aadhaar details here: http://airtel-sim-kyc.online.",
+      "label": "scam",
+      "category": "KYC / Account Scam"
+    },
+    {
+      "id": "kyc_005",
+      "text": "Paytm Wallet KYC Expired: You cannot receive or send payments. Click link to complete video KYC and unlock wallet: http://paytm-kyc-refresh.click.",
+      "label": "scam",
+      "category": "KYC / Account Scam"
+    },
+    {
+      "id": "kyc_006",
+      "text": "Jio SIM Alert: Your number will be suspended today. Please call customer care officer on 8765432109 to complete Aadhaar biometric linkage.",
+      "label": "scam",
+      "category": "KYC / Account Scam"
+    },
+
+    {
+      "id": "legit_001",
+      "text": "Dear Students, Please be reminded that the mid-semester evaluation for CS301 Database Systems will take place in Hall B on Friday at 10:00 AM. Bring your college ID card and scientific calculator. Best regards, Department of Computer Science.",
+      "label": "legitimate",
+      "category": "Academic Notice"
+    },
+    {
+      "id": "legit_002",
+      "text": "Central Library Reminder: The book 'Introduction to Algorithms (CLRS)' issued to your account is due for return on 15th October. You can renew the book online via the student intranet portal without penalty.",
+      "label": "legitimate",
+      "category": "Campus Service"
+    },
+    {
+      "id": "legit_003",
+      "text": "Placement Cell Notification: Infosys campus drive registration is now open for 3rd and 4th year CSE/IT students on the official portal at https://placement.university.edu.in. Deadline: October 20th. No registration fees are required.",
+      "label": "legitimate",
+      "category": "Placement Drive"
+    },
+    {
+      "id": "legit_004",
+      "text": "Dear Student, your semester tuition fee receipt for Autumn 2026 has been generated. You can download the official stamped PDF from your student ERP dashboard at https://erp.university.edu.in/finance/receipts.",
+      "label": "legitimate",
+      "category": "Administrative"
+    },
+    {
+      "id": "legit_005",
+      "text": "IEEE Student Branch Workshop: Join us for a hands-on session on Git and Open Source Contributions this Saturday at 2 PM in Lab 3. Free registration for all university students. RSVP on the official portal.",
+      "label": "legitimate",
+      "category": "Student Activity"
+    },
+    {
+      "id": "legit_006",
+      "text": "Prof. Sen: Hello class, I have uploaded the lecture slides and assignment 3 on our Google Classroom page. The submission deadline is next Tuesday at 11:59 PM.",
+      "label": "legitimate",
+      "category": "Academic Coursework"
+    },
+    {
+      "id": "legit_007",
+      "text": "Hostel Warden Office: The annual room inventory check will be conducted by hostel staff on Thursday between 3 PM and 6 PM. Please ensure your rooms are accessible.",
+      "label": "legitimate",
+      "category": "Hostel Notice"
+    },
+    {
+      "id": "legit_008",
+      "text": "Sports Council Announcement: Inter-departmental football tournament trials will be held tomorrow at 4 PM at the university main ground. Interested students please report to Coach Verma.",
+      "label": "legitimate",
+      "category": "Campus Sports"
+    },
+    {
+      "id": "legit_009",
+      "text": "State Bank of India: Your account ending in 4092 has been credited with INR 5,000 on 28-Sep-2026 through NEFT from university stipend disbursement. Available balance INR 12,450. Contact branch for queries.",
+      "label": "legitimate",
+      "category": "Banking Alert"
+    },
+    {
+      "id": "legit_010",
+      "text": "Academic Registrar: Registration for elective courses for the upcoming spring semester begins next Monday via the university portal https://academics.university.edu.in. Please consult your faculty advisor.",
+      "label": "legitimate",
+      "category": "Academic Notice"
+    },
+    {
+      "id": "legit_011",
+      "text": "Google Summer of Code: Applications for student contributors will open in February. Check the official guide at https://summerofcode.withgoogle.com for timeline and project ideas.",
+      "label": "legitimate",
+      "category": "Internship Program"
+    },
+    {
+      "id": "legit_012",
+      "text": "Campus Medical Center: Annual health checkup and blood donation camp is scheduled for this Wednesday from 9 AM to 4 PM at the Student Activity Center.",
+      "label": "legitimate",
+      "category": "Health Center"
+    },
+    {
+      "id": "legit_013",
+      "text": "ACM Student Chapter: Weekly coding competition begins at 8 PM tonight on HackerRank. Top 3 participants receive certificates. Link shared on the official student Discord.",
+      "label": "legitimate",
+      "category": "Student Activity"
+    },
+    {
+      "id": "legit_014",
+      "text": "University IT Services: Scheduled maintenance of the campus Wi-Fi network will occur on Sunday from 2 AM to 5 AM. Internet services will be temporarily interrupted.",
+      "label": "legitimate",
+      "category": "Campus Service"
+    },
+    {
+      "id": "legit_015",
+      "text": "Dear Applicant, Your application for Student Research Assistantship in Robotics Lab has been received. Shortlisted candidates will be invited for an in-person interview next week.",
+      "label": "legitimate",
+      "category": "Research Assistantship"
+    },
+    {
+      "id": "legit_016",
+      "text": "Dean of Student Affairs: Applications for the National Means Scholarship have been forwarded to the state portal. Eligible students can track status on https://scholarships.gov.in.",
+      "label": "legitimate",
+      "category": "Scholarship Information"
+    }
+  ]
+}
