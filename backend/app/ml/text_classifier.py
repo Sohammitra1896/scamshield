@@ -7,8 +7,8 @@ from app.ml.preprocessor import normalize_text_for_tfidf
 
 class TextMessageAnalyzer:
     """
-    Explainable Text Message Classifier using TF-IDF + Calibrated Logistic Regression.
-    Computes genuine probabilities and linear token feature contributions (w_i * x_i).
+    Explainable Text Message Classifier using TF-IDF + Logistic Regression.
+    Computes model-estimated probabilities and linear token feature contributions (w_i * x_i).
     """
 
     def __init__(self, artifacts_dir: Optional[str] = None):
@@ -61,7 +61,7 @@ class TextMessageAnalyzer:
 
     def predict_proba(self, text: str) -> Dict[str, float]:
         """
-        Compute genuine calibrated probability distribution.
+        Compute genuine model-estimated probability distribution from logistic regression.
         Returns {'legitimate': float, 'scam': float}
         """
         if not self.is_loaded:
@@ -122,6 +122,8 @@ class TextMessageAnalyzer:
     def predict_category(self, text: str) -> Optional[Dict[str, Any]]:
         """
         Predict threat category among the 8 student threat categories.
+        NOTE: This is an experimental/supporting component trained on small category sample sizes.
+        Confidence is model-estimated and subject to override/validation by the Phase 5 rule engine.
         """
         if self.category_model is None or not self.is_loaded:
             return None

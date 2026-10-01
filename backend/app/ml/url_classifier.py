@@ -78,7 +78,8 @@ class URLRiskClassifier:
 
     def predict_proba(self, url: str) -> Dict[str, float]:
         """
-        Compute genuine calibrated probability distribution.
+        Compute model-estimated probability distribution from logistic regression sigmoid output.
+        Note: No calibration procedure (e.g. CalibratedClassifierCV) was applied.
         Returns {'legitimate': float, 'scam': float}
         """
         if not self.is_loaded:

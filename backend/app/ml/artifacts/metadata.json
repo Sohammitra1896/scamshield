@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-09-30T08:34:38.801069+00:00",
+  "timestamp": "2026-10-01T17:04:33.514185+00:00",
   "model_version": "0.1.0",
   "team": "OBSIDIAN",
   "competition": "INNOV12",
@@ -40,5 +40,8 @@
     "train_demo_exact_overlap_count": 0,
     "test_demo_exact_overlap_count": 0,
     "demo_isolation_passed": true
-  }
+  },
+  "probability_terminology": "model-estimated (logistic regression sigmoid output; no calibration procedure such as CalibratedClassifierCV was applied)",
+  "category_model_limitation": "Experimental supporting component only. Each of the 8 student threat categories has approximately 6-8 training samples. Confidence values are expected to be low (~0.30-0.45). Category predictions must be validated or overridden by the rule engine (Phase 5) when explicit rule-based evidence is detected. Do NOT present category predictions as highly reliable.",
+  "url_evaluation_limitation": "The initial URL evaluation achieved 100% accuracy on a held-out set of 13 URLs; due to the small evaluation set, this result has limited generalizability."
 }

@@ -1,7 +1,7 @@
 ==================================================================
  ScamShield Empirical Model Evaluation Report (Held-Out Test Set)
  Team: OBSIDIAN | INNOV12 Competition
- Generated: 2026-09-30T08:34:38.801069+00:00
+ Generated: 2026-10-01T17:04:33.514185+00:00
 ==================================================================
 
 1. TEXT MESSAGE CLASSIFIER (TF-IDF + Logistic Regression)
@@ -25,7 +25,40 @@
    Precision (Scam):      1.0000
    Recall (Scam):         1.0000
    F1-Score (Scam):       1.0000
+   *** LIMITATION: The initial URL evaluation achieved 100% on a held-out
+       set of 13 URLs; due to the small evaluation set, this result has
+       limited generalizability. Additional public URL data has not been
+       incorporated at this stage.
 
 3. DEMONSTRATION SET ISOLATION:
    Total Isolated Demo Scenarios: 5
    Overlap with Training/Testing: 0 (PASSED)
+
+4. DATASET SOURCES (Clearly Distinguished):
+   A. UCI SMS Spam Collection (General Benchmark)
+      - 5574 samples. English SMS spam/ham collected circa 2011.
+      - Represents general SMS spam; NOT modern student-specific scams.
+      - Source: https://archive.ics.uci.edu/dataset/228/sms+spam+collection
+
+   B. Student Threat Corpus (Domain-Specific Curated)
+      - 68 samples across 8 student threat categories.
+      - Covers: fake internship, fake recruitment, scholarship scam,
+        phishing link, payment scam, impersonation, fake notice, KYC scam.
+      - Curated specifically for the ScamShield project by Team OBSIDIAN.
+
+   C. URL Risk Corpus (URL-Specific)
+      - 50 labeled URLs (legitimate and scam).
+      - Used exclusively for the URL risk classifier (separate pipeline).
+
+   D. Demonstration Scenarios (Strictly Isolated)
+      - 5 synthetic scenarios (DEMO-001 to DEMO-005).
+      - NEVER used in training, validation, or testing.
+
+5. KNOWN LIMITATIONS:
+   - Probability outputs are model-estimated (logistic regression sigmoid).
+     No calibration procedure (e.g. CalibratedClassifierCV) was applied.
+   - Category classifier is experimental: ~6-8 samples per category.
+     Category predictions should be validated by the Phase 5 rule engine.
+   - 7 false negatives on held-out test set demonstrate that the Phase 5
+     deterministic rule engine is required as a safety floor.
+   - URL evaluation result has limited generalizability (13-sample test set).

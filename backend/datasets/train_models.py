@@ -446,6 +446,21 @@ def main():
             "features_count": len(url_eval["feature_keys"]),
         },
         "leakage_verification": leakage_report,
+        "probability_terminology": (
+            "model-estimated (logistic regression sigmoid output; "
+            "no calibration procedure such as CalibratedClassifierCV was applied)"
+        ),
+        "category_model_limitation": (
+            "Experimental supporting component only. Each of the 8 student threat categories "
+            "has approximately 6-8 training samples. Confidence values are expected to be low "
+            "(~0.30-0.45). Category predictions must be validated or overridden by the rule "
+            "engine (Phase 5) when explicit rule-based evidence is detected. Do NOT present "
+            "category predictions as highly reliable."
+        ),
+        "url_evaluation_limitation": (
+            "The initial URL evaluation achieved 100% accuracy on a held-out set of 13 URLs; "
+            "due to the small evaluation set, this result has limited generalizability."
+        ),
     }
 
     with open(os.path.join(ARTIFACTS_DIR, "metadata.json"), "w", encoding="utf-8") as f:
@@ -489,10 +504,38 @@ def main():
         f.write(f"   Accuracy:              {url_eval['accuracy']:.4f}\n")
         f.write(f"   Precision (Scam):      {url_eval['precision']:.4f}\n")
         f.write(f"   Recall (Scam):         {url_eval['recall']:.4f}\n")
-        f.write(f"   F1-Score (Scam):       {url_eval['f1_score']:.4f}\n\n")
+        f.write(f"   F1-Score (Scam):       {url_eval['f1_score']:.4f}\n")
+        f.write("   *** LIMITATION: The initial URL evaluation achieved 100% on a held-out\n")
+        f.write("       set of 13 URLs; due to the small evaluation set, this result has\n")
+        f.write("       limited generalizability. Additional public URL data has not been\n")
+        f.write("       incorporated at this stage.\n\n")
         f.write("3. DEMONSTRATION SET ISOLATION:\n")
         f.write(f"   Total Isolated Demo Scenarios: {len(demo_scenarios)}\n")
-        f.write(f"   Overlap with Training/Testing: 0 (PASSED)\n")
+        f.write(f"   Overlap with Training/Testing: 0 (PASSED)\n\n")
+        f.write("4. DATASET SOURCES (Clearly Distinguished):\n")
+        f.write("   A. UCI SMS Spam Collection (General Benchmark)\n")
+        f.write(f"      - {len(uci_samples)} samples. English SMS spam/ham collected circa 2011.\n")
+        f.write("      - Represents general SMS spam; NOT modern student-specific scams.\n")
+        f.write("      - Source: https://archive.ics.uci.edu/dataset/228/sms+spam+collection\n\n")
+        f.write("   B. Student Threat Corpus (Domain-Specific Curated)\n")
+        f.write(f"      - {len(student_samples)} samples across 8 student threat categories.\n")
+        f.write("      - Covers: fake internship, fake recruitment, scholarship scam,\n")
+        f.write("        phishing link, payment scam, impersonation, fake notice, KYC scam.\n")
+        f.write("      - Curated specifically for the ScamShield project by Team OBSIDIAN.\n\n")
+        f.write("   C. URL Risk Corpus (URL-Specific)\n")
+        f.write(f"      - {len(url_samples)} labeled URLs (legitimate and scam).\n")
+        f.write("      - Used exclusively for the URL risk classifier (separate pipeline).\n\n")
+        f.write("   D. Demonstration Scenarios (Strictly Isolated)\n")
+        f.write(f"      - {len(demo_scenarios)} synthetic scenarios (DEMO-001 to DEMO-005).\n")
+        f.write("      - NEVER used in training, validation, or testing.\n\n")
+        f.write("5. KNOWN LIMITATIONS:\n")
+        f.write("   - Probability outputs are model-estimated (logistic regression sigmoid).\n")
+        f.write("     No calibration procedure (e.g. CalibratedClassifierCV) was applied.\n")
+        f.write("   - Category classifier is experimental: ~6-8 samples per category.\n")
+        f.write("     Category predictions should be validated by the Phase 5 rule engine.\n")
+        f.write("   - 7 false negatives on held-out test set demonstrate that the Phase 5\n")
+        f.write("     deterministic rule engine is required as a safety floor.\n")
+        f.write("   - URL evaluation result has limited generalizability (13-sample test set).\n")
 
     print(f"\n[+] Empirical Evaluation Report saved to: {report_path}")
     print(f"[+] Human-readable Summary saved to:      {summary_path}")
