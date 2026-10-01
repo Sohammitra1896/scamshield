@@ -1,77 +1,58 @@
-import logging
 from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.config import settings
-from app.api.v1.router import api_router
-from app.core.database import get_db_status
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO if not settings.DEBUG else logging.DEBUG,
-    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
-)
-logger = logging.getLogger("scamshield.main")
+from app.api.v1.router import router as api_router
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """
-    Application lifespan manager for startup and shutdown routines.
+    Application lifecycle.
+
+    ML models are loaded by the analysis engines when analysis is
+    requested, keeping application startup lightweight.
     """
-    logger.info("Initializing %s v%s...", settings.PROJECT_NAME, settings.VERSION)
-    logger.info("Team: %s | Competition: %s", settings.TEAM_NAME, settings.COMPETITION)
-    logger.info("Tracks: %s (Primary), %s (Supporting)", settings.PRIMARY_TRACK, settings.SUPPORTING_TRACK)
-    
-    # Check database status on startup
-    db_status = get_db_status()
-    logger.info("Database status: %s (Engine: %s, Fallback: %s)", 
-                db_status.get("status"), 
-                db_status.get("active_engine"), 
-                db_status.get("fallback_active"))
-    
     yield
-    
-    logger.info("Shutting down %s...", settings.PROJECT_NAME)
 
 
 app = FastAPI(
-    title=settings.PROJECT_NAME,
-    version=settings.VERSION,
+    title="ScamShield API",
     description=(
-        "ScamShield is an explainable AI-powered digital safety platform designed "
-        "primarily for students and young digital users.\n\n"
-        "Philosophy: DETECT → EXPLAIN → PROTECT\n\n"
-        "Team OBSIDIAN — INNOV12 Competition"
+        "ScamShield — Intelligent Scam Detection and Digital Trust "
+        "Platform by Team Obsidian."
     ),
-    openapi_url=f"{settings.API_V1_STR}/openapi.json",
-    docs_url=f"{settings.API_V1_STR}/docs",
-    redoc_url=f"{settings.API_V1_STR}/redoc",
-    lifespan=lifespan,
+    version="0.2.0",
+    docs_url="/docs",
+    redoc_url="/redoc",
 )
 
-# CORS middleware configuration
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.BACKEND_CORS_ORIGINS if isinstance(settings.BACKEND_CORS_ORIGINS, list) else ["*"],
+    allow_origins=[
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Mount API routers
-app.include_router(api_router, prefix=settings.API_V1_STR)
 
-
-@app.get("/", tags=["Root"])
-def root_redirect():
-    """Root redirect with basic service information."""
+@app.get("/")
+def root():
     return {
-        "project": settings.PROJECT_NAME,
-        "version": settings.VERSION,
+        "project": "ScamShield",
+        "team": "OBSIDIAN",
         "status": "online",
-        "docs_url": f"{settings.API_V1_STR}/docs",
-        "health_url": f"{settings.API_V1_STR}/health",
-        "team": settings.TEAM_NAME,
-        "competition": settings.COMPETITION,
+        "version": "0.2.0",
+        "message": "ScamShield API is running.",
     }
+
+
+app.include_router(
+    api_router,
+    prefix="/api/v1",
+)
