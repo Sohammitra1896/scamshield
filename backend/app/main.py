@@ -4,16 +4,15 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.v1.router import router as api_router
+from app.core.database import create_tables
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """
     Application lifecycle.
-
-    ML models are loaded by the analysis engines when analysis is
-    requested, keeping application startup lightweight.
     """
+    create_tables()
     yield
 
 

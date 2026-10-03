@@ -1,100 +1,202 @@
 import React from 'react';
-import { BookOpen, ShieldAlert, Check, AlertOctagon, HelpCircle, ExternalLink } from 'lucide-react';
+import {
+  AlertTriangle,
+  BookOpen,
+  CheckCircle2,
+  ShieldAlert,
+} from 'lucide-react';
+
+const scenarios = [
+  {
+    title: 'Fake Internship Offers',
+    warning:
+      'Unexpected internship offers paired with registration fees, deposits or equipment charges.',
+    action:
+      'Verify the organisation through its independently accessed official recruitment channel before paying or sharing information.',
+    indicators: [
+      'registration fee',
+      'security deposit',
+      'remote internship',
+      'Telegram HR',
+    ],
+  },
+  {
+    title: 'Task & Recruitment Scams',
+    warning:
+      'Easy-money tasks followed by requests for deposits, recharges or account payments.',
+    action:
+      'Do not continue a payment chain merely because an earlier task produced a small reward.',
+    indicators: [
+      'task code',
+      'merchant recharge',
+      'daily earnings',
+      'prepaid task',
+    ],
+  },
+  {
+    title: 'Scholarship Fraud',
+    warning:
+      'Messages claiming guaranteed scholarship approval and requesting urgent payment.',
+    action:
+      'Verify scholarship status through the official portal or institution rather than a message link.',
+    indicators: [
+      'processing fee',
+      'scholarship approved',
+      'claim deadline',
+      'UPI payment',
+    ],
+  },
+  {
+    title: 'Credential Phishing',
+    warning:
+      'Lookalike domains, unusual URLs and requests to sign in or verify credentials.',
+    action:
+      'Inspect the exact domain and independently navigate to the official website.',
+    indicators: [
+      '.xyz',
+      'verify login',
+      'account update',
+      'KYC',
+    ],
+  },
+  {
+    title: 'UPI & Payment Fraud',
+    warning:
+      'Requests involving UPI PINs, QR codes or payment actions framed as receiving money.',
+    action:
+      'Do not enter a UPI PIN to receive money and verify unexpected payment requests.',
+    indicators: [
+      'UPI PIN',
+      'scan QR',
+      'refund',
+      'receive money',
+    ],
+  },
+  {
+    title: 'Impersonation',
+    warning:
+      'Messages or calls claiming to represent trusted officials, institutions or agencies.',
+    action:
+      'End the interaction and independently verify the identity using a trusted contact channel.',
+    indicators: [
+      'urgent call',
+      'official notice',
+      'police',
+      'account officer',
+    ],
+  },
+  {
+    title: 'Fake Institutional Notices',
+    warning:
+      'Emergency notices about examinations, fees or account access arriving through unusual channels.',
+    action:
+      'Cross-check with the institution website, portal or known administrative contact.',
+    indicators: [
+      'urgent notice',
+      'fee deadline',
+      'exam cancelled',
+      'verify now',
+    ],
+  },
+  {
+    title: 'KYC & Account Scams',
+    warning:
+      'Threats of immediate suspension combined with links or requests for sensitive information.',
+    action:
+      'Do not use the supplied link. Open the official service independently and verify the account state.',
+    indicators: [
+      'KYC update',
+      'account suspended',
+      'verify immediately',
+      'SIM blocked',
+    ],
+  },
+];
 
 export default function Awareness() {
-  const guideScenarios = [
-    {
-      category: "Fake Internship & Job Scams",
-      warningSign: "Offered a high stipend (e.g. ₹35,000/mo) without an interview or portfolio check; asked to pay a 'refundable laptop courier/registration fee'.",
-      action: "Never pay upfront money for an internship. Legitimate companies dispatch equipment or provide stipends directly without deposits.",
-      keywords: ["security deposit", "laptop fee", "telegram hr", "offer letter pdf"],
-    },
-    {
-      category: "Task & Part-Time Earnings",
-      warningSign: "Invited to Telegram groups to 'like YouTube videos' or 'review hotels' for ₹50–₹100 per task, followed by demanding a 'prepaid merchant recharge'.",
-      action: "Stop communication immediately. This is a Ponzi-style task scam. No legitimate brand pays for random video likes.",
-      keywords: ["merchant task", "daily 2000-5000", "task code", "telegram admin"],
-    },
-    {
-      category: "Scholarship & Grant Frauds",
-      warningSign: "SMS claiming your national/state scholarship is approved, requiring an immediate 'processing fee' via UPI.",
-      action: "Government and legitimate scholarship portals (e.g. NSP) never collect approval fees via private UPI IDs or WhatsApp.",
-      keywords: ["scholarship approved", "sanction fee", "claim deadline", "upi transfer"],
-    },
-    {
-      category: "Credential Phishing & Typosquatting",
-      warningSign: "Links mimicking college portals, banking apps, or courier services (e.g., 'internsha1a.xyz', 'sbi-kyc-update.online').",
-      action: "Inspect the exact domain name and TLD before entering credentials. Never click SMS links claiming emergency portal logins.",
-      keywords: [".xyz", ".top", "login-verify", "update-kyc"],
-    },
-    {
-      category: "UPI PIN & Payment Fraud",
-      warningSign: "Buyer on OLX or stranger claiming to send you money and asking you to enter your UPI PIN or scan a QR code.",
-      action: "RULE: UPI PIN is ONLY entered to SEND money, never to RECEIVE money. Scanning a QR code authorizes a debit, not a credit.",
-      keywords: ["scan qr to receive", "enter pin to accept", "refund pending"],
-    },
-    {
-      category: "Digital Impersonation & Arrest",
-      warningSign: "Caller pretending to be Police/CBI/FedEx claiming your parcel contains illegal items and demanding you remain on video call ('Digital Arrest').",
-      action: "Indian law does not recognize 'Digital Arrest'. Real law enforcement agencies never conduct interrogations or demand fund transfers over video calls.",
-      keywords: ["digital arrest", "customs seized", "cbi officer", "fedex parcel"],
-    },
-  ];
-
   return (
-    <div className="space-y-8 py-6">
-      {/* Header */}
+    <div className="space-y-8 py-8">
       <div className="border-b border-slate-800 pb-6">
-        <div className="flex items-center gap-2 text-cyan-400 font-mono text-xs mb-1">
+        <div className="flex items-center gap-2 text-cyan-400 font-mono text-xs">
           <BookOpen className="w-3.5 h-3.5" />
-          <span>STUDENT THREAT INTELLIGENCE</span>
+          STUDENT THREAT INTELLIGENCE
         </div>
-        <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
-          Scam Awareness & Defensive Playbook
+
+        <h1 className="text-3xl font-bold text-white mt-2">
+          Scam Awareness
         </h1>
-        <p className="text-xs sm:text-sm text-slate-400 mt-1">
-          Tactical threat breakdowns designed specifically for students, young developers, and campus job seekers.
+
+        <p className="text-sm text-slate-500 mt-2 max-w-2xl">
+          Practical warning signals and defensive actions for common
+          student-facing digital scams.
         </p>
       </div>
 
-      {/* Guide Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {guideScenarios.map((item, idx) => (
-          <div
-            key={idx}
-            className="p-6 rounded-xl border border-slate-800 bg-slate-900/60 space-y-4 hover:border-slate-700 transition-colors"
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        {scenarios.map((item) => (
+          <article
+            key={item.title}
+            className="rounded-2xl border border-slate-800 bg-slate-900/60 p-6"
           >
-            <div className="flex items-start justify-between">
-              <h3 className="text-base font-bold text-white flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-cyan-400"></span>
-                {item.category}
-              </h3>
-            </div>
-
-            <div className="space-y-2 text-xs">
-              <div className="p-3 rounded-lg bg-rose-500/10 border border-rose-500/20 text-rose-300">
-                <span className="font-semibold block text-rose-200 mb-0.5">Warning Signal:</span>
-                {item.warningSign}
+            <div className="flex items-start gap-3">
+              <div className="p-2 rounded-lg bg-cyan-500/10 border border-cyan-500/20">
+                <ShieldAlert className="w-5 h-5 text-cyan-400" />
               </div>
 
-              <div className="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-300">
-                <span className="font-semibold block text-emerald-200 mb-0.5">Defensive Action:</span>
-                {item.action}
+              <div>
+                <h2 className="text-base font-bold text-white">
+                  {item.title}
+                </h2>
+
+                <p className="text-xs text-slate-500 mt-1">
+                  Common warning pattern
+                </p>
               </div>
             </div>
 
-            <div className="pt-2 border-t border-slate-800 flex items-center gap-2 flex-wrap">
-              <span className="text-[11px] font-mono text-slate-500">Typical Indicators:</span>
-              {item.keywords.map((kw, kIdx) => (
+            <div className="mt-5 rounded-xl border border-rose-500/20 bg-rose-500/5 p-4">
+              <div className="flex gap-2">
+                <AlertTriangle className="w-4 h-4 text-rose-400 mt-0.5" />
+
+                <div>
+                  <p className="text-[10px] font-mono uppercase tracking-widest text-rose-400">
+                    Warning signal
+                  </p>
+
+                  <p className="text-xs text-rose-200/80 mt-1 leading-relaxed">
+                    {item.warning}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-3 rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-4">
+              <div className="flex gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5" />
+
+                <div>
+                  <p className="text-[10px] font-mono uppercase tracking-widest text-emerald-400">
+                    Defensive action
+                  </p>
+
+                  <p className="text-xs text-emerald-200/80 mt-1 leading-relaxed">
+                    {item.action}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex flex-wrap gap-2 mt-4 pt-4 border-t border-slate-800">
+              {item.indicators.map((indicator) => (
                 <span
-                  key={kIdx}
-                  className="px-2 py-0.5 rounded bg-slate-800 text-slate-300 text-[10px] font-mono"
+                  key={indicator}
+                  className="px-2 py-1 rounded-md bg-slate-950 border border-slate-800 text-[10px] text-slate-400 font-mono"
                 >
-                  {kw}
+                  {indicator}
                 </span>
               ))}
             </div>
-          </div>
+          </article>
         ))}
       </div>
     </div>

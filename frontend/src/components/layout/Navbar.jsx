@@ -1,55 +1,86 @@
 import React from 'react';
-import { Shield, Cpu, Activity, Clock, BookOpen } from 'lucide-react';
+import {
+  Activity,
+  BookOpen,
+  Clock3,
+  Shield,
+} from 'lucide-react';
 
-export default function Navbar({ activePage, setActivePage, backendStatus }) {
+export default function Navbar({
+  activePage,
+  setActivePage,
+  backendStatus,
+}) {
   const navItems = [
-    { id: 'home', label: 'Overview', icon: Activity },
-    { id: 'analyzer', label: 'Threat Analyzer', icon: Shield },
-    { id: 'history', label: 'Scan Audit Log', icon: Clock },
-    { id: 'awareness', label: 'Threat Intelligence', icon: BookOpen },
+    {
+      id: 'home',
+      label: 'Overview',
+      icon: Activity,
+    },
+    {
+      id: 'analyzer',
+      label: 'Threat Analyzer',
+      icon: Shield,
+    },
+    {
+      id: 'history',
+      label: 'Scan History',
+      icon: Clock3,
+    },
+    {
+      id: 'awareness',
+      label: 'Awareness',
+      icon: BookOpen,
+    },
   ];
 
   return (
-    <header className="sticky top-0 z-50 border-b border-slate-800 bg-[#0A0F1D]/80 backdrop-blur-md">
+    <header className="sticky top-0 z-50 border-b border-slate-800 bg-[#0A0F1D]/90 backdrop-blur-xl">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo & Platform Info */}
-          <div className="flex items-center gap-3 cursor-pointer" onClick={() => setActivePage('home')}>
-            <div className="relative flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500/20 to-blue-600/20 border border-cyan-500/30 text-cyan-400 shadow-sm shadow-cyan-500/10">
+        <div className="h-16 flex items-center justify-between gap-4">
+
+          {/* Logo */}
+          <button
+            type="button"
+            onClick={() => setActivePage('home')}
+            className="flex items-center gap-3 min-w-0"
+          >
+            <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center shrink-0">
               <Shield className="w-5 h-5 text-cyan-400" />
-              <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-cyan-500"></span>
-              </span>
             </div>
-            <div>
+
+            <div className="text-left min-w-0">
               <div className="flex items-center gap-2">
-                <span className="text-lg font-bold tracking-tight text-white">ScamShield</span>
-                <span className="px-1.5 py-0.5 text-[10px] font-semibold tracking-wide uppercase rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">
+                <span className="text-lg font-black text-white">
+                  ScamShield
+                </span>
+
+                <span className="px-1.5 py-0.5 rounded bg-cyan-500/10 border border-cyan-500/20 text-[9px] text-cyan-400 font-mono">
                   INNOV12
                 </span>
               </div>
-              <div className="text-[11px] font-medium text-slate-400 tracking-wide flex items-center gap-1.5">
-                <span>Team OBSIDIAN</span>
-                <span>•</span>
-                <span className="text-slate-500">Detect → Explain → Protect</span>
+
+              <div className="text-[10px] text-slate-600 font-mono hidden sm:block">
+                TEAM OBSIDIAN • DETECT → EXPLAIN → PROTECT
               </div>
             </div>
-          </div>
+          </button>
 
-          {/* Navigation Links */}
+          {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-1">
             {navItems.map((item) => {
               const Icon = item.icon;
-              const isActive = activePage === item.id;
+              const active = activePage === item.id;
+
               return (
                 <button
                   key={item.id}
+                  type="button"
                   onClick={() => setActivePage(item.id)}
-                  className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-sm font-medium transition-all duration-150 ${
-                    isActive
-                      ? 'bg-cyan-500/15 text-cyan-400 border border-cyan-500/30 shadow-sm shadow-cyan-500/10'
-                      : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold transition ${
+                    active
+                      ? 'text-cyan-400 bg-cyan-500/10 border border-cyan-500/20'
+                      : 'text-slate-500 hover:text-slate-200 hover:bg-slate-900'
                   }`}
                 >
                   <Icon className="w-4 h-4" />
@@ -59,40 +90,49 @@ export default function Navbar({ activePage, setActivePage, backendStatus }) {
             })}
           </nav>
 
-          {/* Backend Status Badge */}
-          <div className="flex items-center gap-3">
-            <div className="hidden sm:flex items-center gap-2 px-2.5 py-1 rounded-full bg-slate-900 border border-slate-800 text-xs">
-              <span
-                className={`w-2 h-2 rounded-full ${
-                  backendStatus === 'healthy'
-                    ? 'bg-emerald-400 animate-pulse'
-                    : backendStatus === 'connecting'
-                    ? 'bg-amber-400 animate-ping'
-                    : 'bg-rose-500'
-                }`}
-              />
-              <span className="text-slate-400 font-mono text-[11px]">
-                API: {backendStatus === 'healthy' ? 'CONNECTED' : backendStatus.toUpperCase()}
-              </span>
-            </div>
+          {/* Backend Status */}
+          <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full border border-slate-800 bg-slate-900">
+            <span
+              className={`w-2 h-2 rounded-full ${
+                backendStatus === 'healthy'
+                  ? 'bg-emerald-400 animate-pulse'
+                  : backendStatus === 'connecting'
+                    ? 'bg-amber-400 animate-pulse'
+                    : 'bg-rose-400'
+              }`}
+            />
+
+            <span className="text-[10px] font-mono text-slate-500">
+              {backendStatus === 'healthy'
+                ? 'API CONNECTED'
+                : backendStatus.toUpperCase()}
+            </span>
           </div>
         </div>
       </div>
-      {/* Mobile nav bar */}
-      <div className="md:hidden flex items-center justify-around border-t border-slate-800/80 px-2 py-2 bg-slate-950/90">
+
+      {/* Mobile Navigation */}
+      <div className="md:hidden border-t border-slate-800 px-2 py-2 flex justify-around bg-slate-950/90">
         {navItems.map((item) => {
           const Icon = item.icon;
-          const isActive = activePage === item.id;
+          const active = activePage === item.id;
+
           return (
             <button
               key={item.id}
+              type="button"
               onClick={() => setActivePage(item.id)}
-              className={`flex flex-col items-center gap-1 px-3 py-1 rounded text-xs font-medium ${
-                isActive ? 'text-cyan-400' : 'text-slate-400'
+              className={`flex flex-col items-center gap-1 px-3 py-1 ${
+                active
+                  ? 'text-cyan-400'
+                  : 'text-slate-600'
               }`}
             >
               <Icon className="w-4 h-4" />
-              <span>{item.label.split(' ')[0]}</span>
+
+              <span className="text-[9px] font-medium">
+                {item.label.split(' ')[0]}
+              </span>
             </button>
           );
         })}

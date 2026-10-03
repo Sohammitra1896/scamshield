@@ -55,6 +55,10 @@ def test_message_endpoint():
     assert "ml_legitimacy_drivers" in data
     assert "recommendations" in data
 
+    assert data["history_saved"] is True
+    assert isinstance(data["scan_id"], int)
+    assert data["processing_time_ms"] >= 0
+
     assert 0.0 <= data["risk"]["model_estimated_scam_probability"] <= 1.0
     assert 0.0 <= data["risk"]["risk_score"] <= 100.0
 
@@ -74,7 +78,7 @@ def test_url_endpoint():
     response = client.post(
         "/api/v1/analyze/url",
         json={
-            "url": "http://internsha1a-stipend.xyz/verify?token=123"
+            "url": "http://internsha1a-stipend.xyz/verify?token=123",
         },
     )
 
@@ -85,9 +89,15 @@ def test_url_endpoint():
     assert data["input_type"] == "url"
     assert data["prediction"] in {"scam", "legitimate"}
 
+    assert "model_estimated_probabilities" in data
     assert "risk" in data
     assert "category" in data
     assert "indicators" in data
+    assert "recommendations" in data
+
+    assert data["history_saved"] is True
+    assert isinstance(data["scan_id"], int)
+    assert data["processing_time_ms"] >= 0
 
     assert 0.0 <= data["risk"]["model_estimated_scam_probability"] <= 1.0
     assert 0.0 <= data["risk"]["risk_score"] <= 100.0

@@ -1,7 +1,15 @@
-from fastapi import APIRouter, HTTPException
+import time
 
-from app.db.schemas import AnalyzeMessageRequest, ScanResponse
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.orm import Session
+
+from app.core.database import get_db
+from app.db.schemas import (
+    AnalyzeMessageRequest,
+    ScanResponse,
+)
 from app.engine.decision_engine import ScamShieldDecisionEngine
+from app.services.scan_service import save_scan
 
 
 router = APIRouter(
@@ -15,18 +23,44 @@ router = APIRouter(
     response_model=ScanResponse,
     summary="Analyze a message",
 )
-def analyze_message(request: AnalyzeMessageRequest):
+def analyze_message(
+    request: AnalyzeMessageRequest,
+    db: Session = Depends(get_db),
+):
     """
-    Analyze message text using the ScamShield ML and rule-based
-    decision pipeline.
+    Analyze a message and persist the completed scan.
     """
 
     try:
         engine = ScamShieldDecisionEngine()
 
-        result = engine.analyze_message(request.message)
+        start_time = time.perf_counter()
 
-        return result
+        result = engine.analyze_message(
+            request.message
+        )
+
+        processing_time_ms = (
+            time.perf_counter() - start_time
+        ) * 1000.0
+
+        record = save_scan(
+            db=db,
+            input_text=request.message,
+            result=result,
+            processing_time_ms=processing_time_ms,
+        )
+
+        response = dict(result)
+
+        response["scan_id"] = record.id
+        response["processing_time_ms"] = round(
+            processing_time_ms,
+            3,
+        )
+        response["history_saved"] = True
+
+        return response
 
     except ValueError as exc:
         raise HTTPException(
@@ -35,6 +69,8 @@ def analyze_message(request: AnalyzeMessageRequest):
         ) from exc
 
     except Exception as exc:
+        db.rollback()
+
         raise HTTPException(
             status_code=500,
             detail=f"Message analysis failed: {exc}",

@@ -4,6 +4,8 @@ from app.api.v1.endpoints.health import router as health_router
 from app.api.v1.endpoints.message import router as message_router
 from app.api.v1.endpoints.url import router as url_router
 from app.api.v1.endpoints.screenshot import router as screenshot_router
+from app.api.v1.endpoints.history import router as history_router
+from app.api.v1.endpoints.stats import router as stats_router
 
 
 router = APIRouter()
@@ -22,4 +24,12 @@ router.include_router(
 
 router.include_router(
     screenshot_router,
+)
+
+router.include_router(
+    history_router,
+)
+
+router.include_router(
+    stats_router,
 )
