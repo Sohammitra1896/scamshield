@@ -4,7 +4,7 @@ import './globals.css'
 
 export const metadata: Metadata = {
   title: 'ScamShield — Intelligent Scam Detection',
-  description: 'Explainable scam and fraud detection by Team OBSIDIAN.',
+  description: 'Explainable scam and fraud detection for safer digital trust.',
   generator: 'v0.app',
   icons: {
     icon: [
