@@ -23,12 +23,19 @@ export type ScanResult = {
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL ?? process.env.VITE_API_BASE_URL ?? ''
 
 async function request<T>(path: string, options?: RequestInit): Promise<T> {
-  const response = await fetch(`${API_BASE}${path}`, {
-    ...options,
-    headers: { 'Content-Type': 'application/json', ...(options?.headers ?? {}) },
-  })
-  if (!response.ok) throw new Error(`Request failed with status ${response.status}`)
-  return response.json()
+  try {
+    const response = await fetch(`${API_BASE}${path}`, {
+      ...options,
+      headers: { 'Content-Type': 'application/json', ...(options?.headers ?? {}) },
+    })
+    if (!response.ok) {
+      throw new Error(response.status >= 500 ? 'ScamShield API is unavailable. Check the backend connection.' : 'Unable to analyze this input. Please try again.')
+    }
+    return response.json()
+  } catch (error) {
+    if (error instanceof TypeError) throw new Error('ScamShield API is unavailable. Check the backend connection.')
+    throw error
+  }
 }
 
 export const api = {
@@ -53,5 +60,6 @@ export const riskTone = (level?: string) => {
   const value = (level ?? '').toLowerCase()
   if (value.includes('high') || value.includes('critical')) return 'high'
   if (value.includes('suspicious') || value.includes('medium')) return 'medium'
+  if (value.includes('low')) return 'low'
   return 'safe'
 }
