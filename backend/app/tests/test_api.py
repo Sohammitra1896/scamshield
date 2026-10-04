@@ -78,7 +78,10 @@ def test_url_endpoint():
     response = client.post(
         "/api/v1/analyze/url",
         json={
-            "url": "http://internsha1a-stipend.xyz/verify?token=123",
+            "url": (
+                "http://internsha1a-stipend.xyz/"
+                "verify?token=123"
+            ),
         },
     )
 
@@ -114,7 +117,7 @@ def test_url_validation():
     assert response.status_code == 422
 
 
-def test_screenshot_endpoint_does_not_fabricate_results():
+def test_screenshot_endpoint_rejects_invalid_image():
     response = client.post(
         "/api/v1/analyze/screenshot",
         files={
@@ -126,8 +129,8 @@ def test_screenshot_endpoint_does_not_fabricate_results():
         },
     )
 
-    assert response.status_code == 501
+    assert response.status_code == 422
 
     data = response.json()
 
-    assert "Phase 9" in data["detail"]
+    assert data["detail"] == "The uploaded file is not a valid image."
