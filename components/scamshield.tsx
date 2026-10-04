@@ -27,7 +27,377 @@ function Analyze({ initialType = 'message' }: { initialType?: ScanType }) { cons
 
 function ResultPanel({ result }: { result: ScanResult }) { const score = resultScore(result); const evidence = Array.isArray(result.evidence) ? result.evidence.map(item => item.text ?? item.description ?? item.label ?? '').filter(Boolean) : []; const actions = Array.isArray(result.recommended_actions) ? result.recommended_actions : []; return <section className="result-panel"><div className="result-heading"><div><div className="eyebrow">ANALYSIS COMPLETE</div><h2>{resultValue(result, 'prediction')}</h2><ThreatBadge level={resultValue(result, 'risk_level')} /></div><RiskGauge score={score} /></div><div className="result-metrics"><div><span>Risk score</span><strong>{result.risk_score ?? '—'} / 100</strong></div><div><span>Scam probability</span><strong>{resultValue(result, 'scam_probability', resultValue(result, 'model_scam_probability'))}</strong></div><div><span>Threat category</span><strong>{resultValue(result, 'threat_category')}</strong></div></div><div className="result-block"><h3>Detection evidence</h3><DriverList title="Signals returned by the API" items={evidence} /></div><div className="drivers-grid"><DriverList title="Positive scam drivers" items={Array.isArray(result.positive_drivers) ? result.positive_drivers : []} /><DriverList title="Legitimacy drivers" items={Array.isArray(result.negative_drivers) ? result.negative_drivers : []} positive /></div><div className="result-block"><h3>Recommended actions</h3><ActionSteps actions={actions} /></div><div className="scan-meta">{result.scan_id && <span>Scan ID · {result.scan_id}</span>}{result.processing_time_ms !== undefined && <span>Processing · {result.processing_time_ms}ms</span>}{result.scan_id && <span><Check size={13} /> History saved</span>}</div></section> }
 
-function History() { const [items, setItems] = useState<ScanResult[]>([]); const [loading, setLoading] = useState(true); const [error, setError] = useState(''); const [filter, setFilter] = useState('All'); const [selected, setSelected] = useState<ScanResult | null>(null); useEffect(() => { api.history().then(setItems).catch(e => setError(e instanceof Error ? e.message : 'Unable to load scan history.')).finally(() => setLoading(false)) }, []); const filtered = useMemo(() => items.filter(item => filter === 'All' || (item.type ?? '').toLowerCase() === filter.toLowerCase() || riskTone(item.risk_level) === filter.toLowerCase().replace(' risk', '')), [items, filter]); return <main className="page"><div className="page-title"><div><div className="eyebrow">INTELLIGENCE LOG</div><h1>Scan history.</h1><p>A searchable record of every investigation.</p></div><div className="history-count">{items.length} records</div></div><div className="filter-row">{['All', 'Message', 'URL', 'Screenshot', 'Safe', 'Low Risk', 'Suspicious', 'High Risk'].map(item => <button className={filter === item ? 'active' : ''} onClick={() => setFilter(item)} key={item}>{item}</button>)}</div>{loading ? <LoadingState label="Loading investigation history…" /> : error ? <ErrorState message={error} /> : filtered.length ? <div className="history-list"><div className="history-header"><span>Type</span><span>Input preview</span><span>Risk</span><span>Score</span><span>Category</span><span>Timestamp</span><span>Processing</span></div>{filtered.map((item, index) => <button className="history-row" key={item.scan_id ?? index} onClick={async () => { if (!item.scan_id) return setSelected(item); try { setSelected(await api.detail(item.scan_id)) } catch { setSelected(item) } }}><div className="history-type"><div className="mini-icon"><ScanSearch size={15} /></div><span>{item.type ?? 'scan'}</span></div><div className="history-preview">{resultValue(item, 'input_preview')}</div><ThreatBadge level={resultValue(item, 'risk_level')} /><strong className="history-score">{resultScore(item) || '—'}</strong><span className="history-category">{resultValue(item, 'threat_category')}</span><span className="history-date">{resultValue(item, 'created_at')}</span><span className="history-time"><Clock3 size={13} /> {resultValue(item, 'processing_time_ms')}ms</span></button>)}</div> : <EmptyState text="Your investigations will appear here." detail="Completed message, URL and screenshot scans are stored here for review." />}{selected && <DetailModal item={selected} onClose={() => setSelected(null)} />}</main> }
+function History() {
+  const [items, setItems] = useState<ScanResult[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
+  const [filter, setFilter] = useState('All')
+  const [selected, setSelected] = useState<ScanResult | null>(null)
+  const [deleting, setDeleting] = useState<number | null>(null)
+  const [clearing, setClearing] = useState(false)
+
+  const loadHistory = async () => {
+    setLoading(true)
+    setError('')
+
+    try {
+      const data = await api.history()
+      setItems(Array.isArray(data) ? data : [])
+    } catch (e) {
+      setError(
+        e instanceof Error
+          ? e.message
+          : 'Unable to load scan history.'
+      )
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    void loadHistory()
+  }, [])
+
+  const handleDelete = async (
+    scanId: number
+  ) => {
+    const confirmed = window.confirm(
+      'Delete this investigation from history? This cannot be undone.'
+    )
+
+    if (!confirmed || deleting !== null) {
+      return
+    }
+
+    setDeleting(scanId)
+    setError('')
+
+    try {
+      await api.deleteHistory(scanId)
+
+      setItems((current) =>
+        current.filter(
+          (item) => Number(item.scan_id) !== scanId
+        )
+      )
+
+      if (
+        selected &&
+        Number(selected.scan_id) === scanId
+      ) {
+        setSelected(null)
+      }
+    } catch (e) {
+      setError(
+        e instanceof Error
+          ? e.message
+          : 'Unable to delete this scan.'
+      )
+    } finally {
+      setDeleting(null)
+    }
+  }
+
+  const handleClearAll = async () => {
+    if (items.length === 0 || clearing) {
+      return
+    }
+
+    const confirmed = window.confirm(
+      `Delete all ${items.length} investigation records? This cannot be undone.`
+    )
+
+    if (!confirmed) {
+      return
+    }
+
+    setClearing(true)
+    setError('')
+
+    try {
+      await api.clearHistory()
+
+      setItems([])
+      setSelected(null)
+    } catch (e) {
+      setError(
+        e instanceof Error
+          ? e.message
+          : 'Unable to clear scan history.'
+      )
+    } finally {
+      setClearing(false)
+    }
+  }
+
+  const filtered = useMemo(
+    () =>
+      items.filter(
+        (item) =>
+          filter === 'All' ||
+          (item.type ?? '')
+            .toLowerCase() ===
+            filter.toLowerCase() ||
+          riskTone(item.risk_level) ===
+            filter
+              .toLowerCase()
+              .replace(' risk', '')
+      ),
+    [items, filter]
+  )
+
+  return (
+    <main className="page">
+      <div className="page-title">
+        <div>
+          <div className="eyebrow">
+            INTELLIGENCE LOG
+          </div>
+
+          <h1>Scan history.</h1>
+
+          <p>
+            A searchable record of every
+            investigation.
+          </p>
+        </div>
+
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px',
+          }}
+        >
+          <div className="history-count">
+            {items.length} records
+          </div>
+
+          <button
+            className="button subtle"
+            onClick={handleClearAll}
+            disabled={
+              items.length === 0 ||
+              clearing ||
+              deleting !== null
+            }
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '7px',
+            }}
+          >
+            <X size={15} />
+
+            {clearing
+              ? 'Clearing…'
+              : 'Clear history'}
+          </button>
+        </div>
+      </div>
+
+      <div className="filter-row">
+        {[
+          'All',
+          'Message',
+          'URL',
+          'Screenshot',
+          'Safe',
+          'Low Risk',
+          'Suspicious',
+          'High Risk',
+        ].map((item) => (
+          <button
+            className={
+              filter === item
+                ? 'active'
+                : ''
+            }
+            onClick={() =>
+              setFilter(item)
+            }
+            key={item}
+          >
+            {item}
+          </button>
+        ))}
+      </div>
+
+      {error && (
+        <ErrorState message={error} />
+      )}
+
+      {loading ? (
+        <LoadingState
+          label="Loading investigation history…"
+        />
+      ) : filtered.length ? (
+        <div className="history-list">
+          <div className="history-header">
+            <span>Type</span>
+            <span>Input preview</span>
+            <span>Risk</span>
+            <span>Score</span>
+            <span>Category</span>
+            <span>Timestamp</span>
+            <span>Processing</span>
+            <span>Action</span>
+          </div>
+
+          {filtered.map((item, index) => {
+            const scanId =
+              Number(item.scan_id)
+
+            const isDeleting =
+              deleting === scanId
+
+            return (
+              <div
+                className="history-row"
+                key={
+                  item.scan_id ?? index
+                }
+                onClick={async () => {
+                  if (!item.scan_id) {
+                    setSelected(item)
+                    return
+                  }
+
+                  try {
+                    setSelected(
+                      await api.detail(
+                        String(item.scan_id)
+                      )
+                    )
+                  } catch {
+                    setSelected(item)
+                  }
+                }}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(event) => {
+                  if (
+                    event.key === 'Enter' ||
+                    event.key === ' '
+                  ) {
+                    event.preventDefault()
+                    event.currentTarget.click()
+                  }
+                }}
+              >
+                <div className="history-type">
+                  <div className="mini-icon">
+                    <ScanSearch size={15} />
+                  </div>
+
+                  <span>
+                    {item.type ?? 'scan'}
+                  </span>
+                </div>
+
+                <div className="history-preview">
+                  {resultValue(
+                    item,
+                    'input_preview'
+                  )}
+                </div>
+
+                <ThreatBadge
+                  level={resultValue(
+                    item,
+                    'risk_level'
+                  )}
+                />
+
+                <strong className="history-score">
+                  {resultScore(item) || '—'}
+                </strong>
+
+                <span className="history-category">
+                  {resultValue(
+                    item,
+                    'threat_category'
+                  )}
+                </span>
+
+                <span className="history-date">
+                  {resultValue(
+                    item,
+                    'created_at'
+                  )}
+                </span>
+
+                <span className="history-time">
+                  <Clock3 size={13} />
+                  {' '}
+                  {resultValue(
+                    item,
+                    'processing_time_ms'
+                  )}
+                  ms
+                </span>
+
+                <button
+                  className="icon-button"
+                  onClick={(event) => {
+                    event.stopPropagation()
+
+                    if (Number.isFinite(scanId)) {
+                      void handleDelete(scanId)
+                    }
+                  }}
+                  disabled={
+                    !Number.isFinite(scanId) ||
+                    isDeleting ||
+                    clearing
+                  }
+                  aria-label="Delete investigation"
+                  title="Delete investigation"
+                  style={{
+                    color: 'var(--red)',
+                    justifySelf: 'end',
+                  }}
+                >
+                  {isDeleting ? (
+                    <RefreshCw
+                      size={16}
+                      className="spin"
+                    />
+                  ) : (
+                    <X size={16} />
+                  )}
+                </button>
+              </div>
+            )
+          })}
+        </div>
+      ) : (
+        <EmptyState
+          text={
+            items.length
+              ? 'No investigations match this filter.'
+              : 'Your investigations will appear here.'
+          }
+          detail={
+            items.length
+              ? 'Try another history filter.'
+              : 'Completed message, URL and screenshot scans are stored here for review.'
+          }
+        />
+      )}
+
+      {selected && (
+        <DetailModal
+          item={selected}
+          onClose={() =>
+            setSelected(null)
+          }
+        />
+      )}
+    </main>
+  )
+}
+
 function DetailModal({ item, onClose }: { item: ScanResult; onClose: () => void }) { return <div className="modal-backdrop" onClick={onClose}><section className="detail-modal" onClick={e => e.stopPropagation()}><button className="icon-button modal-close" onClick={onClose} aria-label="Close detail"><X size={17} /></button><div className="eyebrow">INVESTIGATION DETAIL</div><h2>{resultValue(item, 'prediction')}</h2><div className="modal-score"><RiskGauge score={resultScore(item)} /><div><ThreatBadge level={resultValue(item, 'risk_level')} /><p>{resultValue(item, 'threat_category')}</p></div></div><div className="drivers-grid"><DriverList title="Evidence" items={Array.isArray(item.evidence) ? item.evidence.map(e => e.text ?? e.description ?? e.label ?? '').filter(Boolean) : []} /><DriverList title="Positive scam drivers" items={Array.isArray(item.positive_drivers) ? item.positive_drivers : []} /></div><h3>Recommended actions</h3><ActionSteps actions={Array.isArray(item.recommended_actions) ? item.recommended_actions : []} /></section></div> }
 
 function Awareness() { const topics = [{ title: 'Phishing & urgency', tag: 'MESSAGES', text: 'Scammers create pressure with deadlines, threats and promises.', advice: 'Pause. Open the official app or website yourself.', icon: MessageSquare }, { title: 'Fake internships', tag: 'OPPORTUNITIES', text: 'Unexpected roles may request fees, banking details or purchases.', advice: 'Verify the recruiter and never pay to receive an offer.', icon: Zap }, { title: 'KYC & account scams', tag: 'IDENTITY', text: 'Fraudsters use account warnings to capture OTPs and credentials.', advice: 'Never share an OTP. Contact the institution through a known channel.', icon: LockKeyhole }, { title: 'Scholarship scams', tag: 'EDUCATION', text: 'Guaranteed awards and urgent application fees are common red flags.', advice: 'Confirm the program on an official institutional website.', icon: ShieldCheck }, { title: 'Impersonation', tag: 'TRUST', text: 'A familiar name, logo or profile is not proof of identity.', advice: 'Verify using a saved number or independent contact method.', icon: Network }, { title: 'UPI & payment fraud', tag: 'MONEY', text: 'Receiving money never requires entering a UPI PIN.', advice: 'Reject unexpected collect requests and verify payees.', icon: Globe2 }]; return <main className="page"><div className="page-title awareness-title"><div><div className="eyebrow">BUILD YOUR SIGNAL</div><h1>Awareness is<br /><em>your first firewall.</em></h1><p>Scams evolve. These patterns help you recognize manipulation before it becomes a loss.</p></div><div className="awareness-mark"><Shield size={40} /><span>STAY<br />SKEPTICAL</span></div></div><div className="awareness-grid">{topics.map(({ title, tag, text, advice, icon: Icon }) => <article className="awareness-card" key={title}><div className="awareness-card-top"><span>{tag}</span><Icon size={19} /></div><h3>{title}</h3><p><b>What it looks like</b>{text}</p><p><b>What to do</b>{advice}</p></article>)}</div></main> }

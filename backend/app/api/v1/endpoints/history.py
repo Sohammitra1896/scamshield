@@ -47,12 +47,10 @@ def get_history(
     Return persisted scans in newest-first order.
     Supports search, risk-level filtering and pagination.
     """
-
     query = db.query(ScanRecord)
 
     if search:
         term = f"%{search.strip()}%"
-
         query = query.filter(
             or_(
                 ScanRecord.input_preview.ilike(term),
@@ -103,7 +101,6 @@ def get_history_record(
     """
     Return one persisted scan with all stored evidence.
     """
-
     record = (
         db.query(ScanRecord)
         .filter(ScanRecord.id == scan_id)
@@ -116,6 +113,75 @@ def get_history_record(
             detail=f"Scan {scan_id} was not found.",
         )
 
-    return HistoryRecordSchema.model_validate(
-        record
+    return HistoryRecordSchema.model_validate(record)
+
+
+@router.delete(
+    "",
+    summary="Delete all scan history",
+)
+def delete_all_history(
+    db: Session = Depends(get_db),
+):
+    """
+    Delete every persisted scan from history.
+    """
+    try:
+        deleted_count = (
+            db.query(ScanRecord)
+            .delete(synchronize_session=False)
+        )
+
+        db.commit()
+
+        return {
+            "success": True,
+            "deleted_count": deleted_count,
+        }
+
+    except Exception:
+        db.rollback()
+        raise HTTPException(
+            status_code=500,
+            detail="Unable to clear scan history.",
+        )
+
+
+@router.delete(
+    "/{scan_id}",
+    summary="Delete one historical scan",
+)
+def delete_history_record(
+    scan_id: int,
+    db: Session = Depends(get_db),
+):
+    """
+    Delete one persisted scan from history.
+    """
+    record = (
+        db.query(ScanRecord)
+        .filter(ScanRecord.id == scan_id)
+        .first()
     )
+
+    if record is None:
+        raise HTTPException(
+            status_code=404,
+            detail=f"Scan {scan_id} was not found.",
+        )
+
+    try:
+        db.delete(record)
+        db.commit()
+
+        return {
+            "success": True,
+            "scan_id": scan_id,
+        }
+
+    except Exception:
+        db.rollback()
+        raise HTTPException(
+            status_code=500,
+            detail="Unable to delete this scan.",
+        )
