@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import io
+import os
 import re
+import shutil
 from typing import List
 
 from PIL import Image, ImageEnhance, ImageFilter, ImageOps
@@ -44,6 +46,44 @@ class OCRService:
     MAX_IMAGE_BYTES = 10 * 1024 * 1024
     MAX_IMAGE_SIZE = 12_000_000
 
+    # Maximum time allowed for one Tesseract OCR process.
+    OCR_TIMEOUT_SECONDS = 10
+
+    @classmethod
+    def _configure_tesseract(cls) -> None:
+        """
+        Configure the Tesseract executable.
+
+        Priority:
+        1. TESSERACT_CMD environment variable
+        2. Tesseract found on PATH
+        3. Common macOS / Linux locations
+        """
+
+        configured_path = os.getenv("TESSERACT_CMD")
+
+        if configured_path:
+            pytesseract.pytesseract.tesseract_cmd = configured_path
+            return
+
+        path_from_system = shutil.which("tesseract")
+
+        if path_from_system:
+            pytesseract.pytesseract.tesseract_cmd = path_from_system
+            return
+
+        common_paths = [
+            "/usr/bin/tesseract",
+            "/usr/local/bin/tesseract",
+            "/opt/local/bin/tesseract",
+            "/opt/homebrew/bin/tesseract",
+        ]
+
+        for path in common_paths:
+            if os.path.isfile(path):
+                pytesseract.pytesseract.tesseract_cmd = path
+                return
+
     @classmethod
     def extract_text_from_bytes(
         cls,
@@ -55,14 +95,18 @@ class OCRService:
         The image is:
         1. opened safely,
         2. converted to RGB,
-        3. enlarged,
-        4. converted to grayscale,
-        5. contrast-enhanced,
-        6. lightly sharpened,
-        7. passed to Tesseract.
+        3. resized when necessary,
+        4. enlarged for small screenshots,
+        5. converted to grayscale,
+        6. contrast-enhanced,
+        7. lightly sharpened,
+        8. passed to Tesseract.
 
         A thresholded version is used as a fallback when
         the first OCR pass produces little or no text.
+
+        Every OCR pass has a hard timeout so the API cannot
+        hang indefinitely.
         """
 
         if not image_bytes:
@@ -95,8 +139,7 @@ class OCRService:
             )
 
         if width * height > cls.MAX_IMAGE_SIZE:
-            # Resize very large screenshots before OCR so that the
-            # low-memory Intel Mac demo environment remains stable.
+            # Resize very large screenshots before OCR.
             scale = (
                 cls.MAX_IMAGE_SIZE
                 / float(width * height)
@@ -118,6 +161,8 @@ class OCRService:
             )
 
         try:
+            cls._configure_tesseract()
+
             enhanced = cls._preprocess(image)
 
             text = cls._run_ocr(
@@ -129,8 +174,8 @@ class OCRService:
             )
 
             # OCR can struggle with screenshots containing
-            # small dark text on bright backgrounds. In that
-            # case, run a second OCR pass on a thresholded image.
+            # small dark text on bright backgrounds. Run a
+            # second pass on a thresholded image when needed.
             if len(cleaned) < 12:
                 thresholded = cls._threshold(
                     enhanced
@@ -156,10 +201,21 @@ class OCRService:
 
         except TesseractNotFoundError as exc:
             raise RuntimeError(
-                "Tesseract OCR is not installed or is not available "
-                "on the system PATH. Install it with "
-                "'brew install tesseract' and try again."
+                "Tesseract OCR is not installed or is not available. "
+                "Make sure Tesseract is installed and configured "
+                "correctly on the server."
             ) from exc
+
+        except RuntimeError as exc:
+            message = str(exc).lower()
+
+            if "timeout" in message:
+                raise RuntimeError(
+                    "OCR processing timed out. "
+                    "Please upload a clearer or smaller screenshot."
+                ) from exc
+
+            raise
 
     @staticmethod
     def _preprocess(
@@ -232,18 +288,23 @@ class OCRService:
             )
         )
 
-    @staticmethod
+    @classmethod
     def _run_ocr(
+        cls,
         image: Image.Image,
     ) -> str:
         """
         Run Tesseract using a layout suitable for
         screenshot/chat text.
+
+        A hard timeout prevents a stuck Tesseract process
+        from hanging the FastAPI request.
         """
 
         return pytesseract.image_to_string(
             image,
             config="--oem 3 --psm 6",
+            timeout=cls.OCR_TIMEOUT_SECONDS,
         )
 
     @staticmethod
