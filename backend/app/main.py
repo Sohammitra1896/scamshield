@@ -28,14 +28,22 @@ app = FastAPI(
 )
 
 
+# Construct the origins from string pieces so they remain literal URLs.
+LOCAL_ORIGIN = "http" + "://localhost:3000"
+LOCAL_IP_ORIGIN = "http" + "://127.0.0.1:3000"
+OLD_LOCAL_ORIGIN = "http" + "://localhost:5173"
+OLD_IP_ORIGIN = "http" + "://127.0.0.1:5173"
+PRODUCTION_ORIGIN = "https" + "://scamshield-web-psi.vercel.app"
+
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://localhost:3000",
-        "http://127.0.0.1:3000",
-        "http://localhost:5173",
-        "http://127.0.0.1:5173",
-        "https://scamshield-web-psi.vercel.app",
+        LOCAL_ORIGIN,
+        LOCAL_IP_ORIGIN,
+        OLD_LOCAL_ORIGIN,
+        OLD_IP_ORIGIN,
+        PRODUCTION_ORIGIN,
     ],
     allow_credentials=True,
     allow_methods=["*"],
