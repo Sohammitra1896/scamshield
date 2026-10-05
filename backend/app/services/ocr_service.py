@@ -47,7 +47,7 @@ class OCRService:
     MAX_IMAGE_SIZE = 12_000_000
 
     # Maximum time allowed for one Tesseract OCR process.
-    OCR_TIMEOUT_SECONDS = 10
+    OCR_TIMEOUT_SECONDS = 25
 
     @classmethod
     def _configure_tesseract(cls) -> None:
